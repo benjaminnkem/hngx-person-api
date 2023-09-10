@@ -61,11 +61,11 @@ Before you begin, ensure you have the following:
 
 ### Endpoints
 
-- **GET /api/persons:** Retrieve a list of all persons.
-- **GET /api/persons/:name:** Retrieve details of a specific person by their name.
-- **POST /api/persons:** Create a new person record.
-- **PUT /api/persons/:name:** Update the details of a specific person.
-- **DELETE /api/persons/:name:** Delete a person record.
+- **GET /api/person:** Retrieve a list of all persons.
+- **GET /api/person/:name:** Retrieve details of a specific person by their name.
+- **POST /api/person:** Create a new person record.
+- **PUT /api/person/:name:** Update the details of a specific person.
+- **DELETE /api/person/:name:** Delete a person record.
 
 ### Examples
 
