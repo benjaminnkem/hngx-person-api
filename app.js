@@ -13,17 +13,22 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.disable("x-powered-by");
 
-app.get("/", (req, res) => res.send("API available at /api/person"));
+app.get("/", (_, res) => res.send("API available at /api/person"));
 
-app.get("/api/person", (req, res) => {
-  res.status(200).send(`To get persons data use /api/person/{personName}.`);
+app.get("/api/person", async (_, res) => {
+  await connectToDB();
+  const allPerson = await usersSchema.aggregate([
+    { $match: {} },
+    { $project: { name: 1, date_joined: 1 } },
+    { $sort: { date_joined: -1 } },
+  ]);
+
+  res.status(200).json({ users: allPerson });
 });
 
 app.get("/api/person/:name", async (req, res) => {
+  const { name } = req.params;
   try {
-    const { name } = req.params;
-    if (typeof name !== "string") return res.status(500).json({ msg: "Parameter name must be a string" });
-
     await connectToDB();
 
     const userDetails = await usersSchema.findOne({ name });
@@ -37,7 +42,6 @@ app.get("/api/person/:name", async (req, res) => {
 
 app.post("/api/person", async (req, res) => {
   const personData = req.body;
-
   if (!personData || !personData.name) return res.status(500).json({ msg: "Name field is required" });
 
   const { name } = personData;
@@ -56,10 +60,10 @@ app.post("/api/person", async (req, res) => {
 
 app.put("/api/person/:name", async (req, res) => {
   const personData = req.body;
-  const nameParam = req.params.name;
-
   const { name } = personData;
+
   if (!name) return res.status(500).json({ msg: "Name field is required" });
+  const nameParam = req.params.name;
 
   try {
     await connectToDB();
@@ -77,6 +81,22 @@ app.put("/api/person/:name", async (req, res) => {
   }
 });
 
-// app.delete("/api/person/:name",async (req, res) => {});
+app.delete("/api/person/:name", async (req, res) => {
+  const { name } = req.params;
+
+  if (!name) return res.status(500).json({ msg: "Name field is required" });
+
+  try {
+    await connectToDB();
+    const userExists = await usersSchema.findOne({ name });
+    if (!userExists) return res.status(403).json({ msg: `User with name (${name}) does not exist.` });
+
+    await usersSchema.deleteOne({ name });
+    res.status(200).json({ msg: `User (${name}) deleted successfully` });
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ msg: "Sorry an error occurred" });
+  }
+});
 
 app.listen(port);
