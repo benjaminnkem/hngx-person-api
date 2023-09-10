@@ -23,7 +23,7 @@ app.get("/api/person", async (_, res) => {
     { $sort: { date_joined: -1 } },
   ]);
 
-  res.status(200).json({ users: allPerson });
+  res.status(200).json(allPerson);
 });
 
 app.get("/api/person/:name", async (req, res) => {
@@ -100,3 +100,4 @@ app.delete("/api/person/:name", async (req, res) => {
 });
 
 app.listen(port);
+module.exports = app;
