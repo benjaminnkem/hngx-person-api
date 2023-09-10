@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 require("dotenv").config();
-const port = process.env.PORT;
+const PORT = process.env.PORT;
 
 const connectToDB = require("./utils/mongo_db");
 const usersSchema = require("./utils/schema/usersSchema");
@@ -100,5 +100,5 @@ app.delete("/api/person/:name", async (req, res) => {
   }
 });
 
-app.listen(port);
+app.listen(PORT);
 module.exports = app;
