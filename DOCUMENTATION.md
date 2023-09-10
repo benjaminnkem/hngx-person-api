@@ -23,7 +23,7 @@ This document provides documentation for the API endpoints along with expected r
 
 Retrieve a list of all persons.
 
-- **URL**: `/api/person`
+- **URL**: `/api`
 - **Method**: `GET`
 - **Request**: None
 - **Response**:
@@ -62,7 +62,7 @@ Retrieve a list of all persons.
 
 Create a new person record.
 
-- **URL**: `/api/persons`
+- **URL**: `/api`
 - **Method**: `POST`
 - **Request**:
 
@@ -79,7 +79,7 @@ Create a new person record.
 
 Retrieve details of a specific person by their name.
 
-- **URL**: `/api/person/:name`
+- **URL**: `/api/:name`
 - **Method**: `GET`
 - **Request**: None
 - **Response**:
@@ -96,7 +96,7 @@ Retrieve details of a specific person by their name.
 
 Update the details of a specific person.
 
-- **URL**: `/api/person/:name` Where `:name` should be replaced with the **`CURRENT`** name of the already existing person.
+- **URL**: `/api/:name` Where `:name` should be replaced with the **`CURRENT`** name of the already existing person.
 - **Method**: `PUT`
 - **Request**:
 
@@ -110,9 +110,9 @@ Update the details of a specific person.
 
 Delete a person record.
 
-This section explains how to delete a person record using a `DELETE` request to the `/api/person/:id` endpoint. A successful deletion will result in an HTTP status code of 204 (No Content), and there will be no response body.
+This section explains how to delete a person record using a `DELETE` request to the `/api/:id` endpoint. A successful deletion will result in an HTTP status code of 204 (No Content), and there will be no response body.
 
-- **URL**: `/api/person/:name`
+- **URL**: `/api/:name`
 - **Method**: `DELETE`
 - **Request**: None
 - **Response** (Success - HTTP Status Code 204 No Content):

@@ -61,11 +61,11 @@ Before you begin, ensure you have the following:
 
 ### Endpoints
 
-- **GET /api/person:** Retrieve a list of all persons.
-- **GET /api/person/:name:** Retrieve details of a specific person by their name.
-- **POST /api/person:** Create a new person record.
-- **PUT /api/person/:name:** Update the details of a specific person.
-- **DELETE /api/person/:name:** Delete a person record.
+- **GET /api:** Retrieve a list of all persons.
+- **GET /api/:name:** Retrieve details of a specific person by their name.
+- **POST /api:** Create a new person record.
+- **PUT /api/:name:** Update the details of a specific person.
+- **DELETE /api/:name:** Delete a person record.
 
 ### Examples
 
@@ -74,7 +74,7 @@ Before you begin, ensure you have the following:
 To retrieve a list of all persons, make a GET request to the following endpoint:
 
 ```bash
-GET /api/person
+GET /api
 ```
 
 ### Retrieving Details of a Specific Person
@@ -82,7 +82,7 @@ GET /api/person
 To retrieve details of a specific person by their name, make a GET request to the following endpoint, replacing `:name` with the person's name:
 
 ```bash
-GET /api/person/:name
+GET /api/:name
 ```
 
 ### Creating a Person
@@ -90,7 +90,7 @@ GET /api/person/:name
 To create a new person record, make a POST request to the following endpoint:
 
 ```bash
-POST /api/person
+POST /api
 ```
 
 Set the `Content-Type` header to `application/json`, and include the person's information (name only) in the request body in JSON format, like this:
@@ -104,7 +104,7 @@ Set the `Content-Type` header to `application/json`, and include the person's in
 To update an existing person data record, make a PUT request to the following endpoint, replacing `:name` with the person's **`CURRENT`** name.
 
 ```bash
-PUT /api/person/:name
+PUT /api/:name
 ```
 
 Include the new person information (name only) in the request body in JSON format, like the one below and also set the `Content-Type` header to `application/json`.
@@ -118,7 +118,7 @@ Include the new person information (name only) in the request body in JSON forma
 To delete a person, make a DELETE request to the following endpoint, replacing `:name` with the person's name:
 
 ```bash
-DELETE /api/person/:name
+DELETE /api/:name
 ```
 ## Source Code
 
