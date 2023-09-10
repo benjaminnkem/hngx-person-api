@@ -12,6 +12,6 @@ describe("DELETE /persons", () => {
 
   it("should delete existing users", async () => {
     const res = await request(app).delete(`/api/person/Benjamin Nkem`)
-    expect(res.status).to.equal(200);
+    expect(res.status).to.equal(204);
   });
 });

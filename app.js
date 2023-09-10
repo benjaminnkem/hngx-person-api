@@ -92,7 +92,7 @@ app.delete("/api/person/:name", async (req, res) => {
     if (!userExists) return res.status(403).json({ msg: `User with name (${name}) does not exist.` });
 
     await usersSchema.deleteOne({ name });
-    res.status(200).json({ msg: `User (${name}) deleted successfully` });
+    res.status(204).json({ msg: `User (${name}) deleted successfully` });
   } catch (e) {
     console.log(e);
     res.status(500).json({ msg: "Sorry an error occurred" });
