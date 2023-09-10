@@ -99,5 +99,5 @@ app.delete("/api/person/:name", async (req, res) => {
   }
 });
 
-app.listen(port);
+process.env.NODE_ENV === "development" && app.listen(port);
 module.exports = app;
