@@ -14,9 +14,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.disable("x-powered-by");
 
-app.get("/", (_, res) => res.send("API available at /api/person"));
+app.get("/", (_, res) => res.send("API available at /api"));
 
-app.get("/api/person", async (_, res) => {
+app.get("/api", async (_, res) => {
   await connectToDB();
   const allPerson = await usersSchema.aggregate([
     { $match: {} },
@@ -27,7 +27,7 @@ app.get("/api/person", async (_, res) => {
   res.status(200).json(allPerson);
 });
 
-app.get("/api/person/:name", async (req, res) => {
+app.get("/api/:name", async (req, res) => {
   const { name } = req.params;
   try {
     await connectToDB();
@@ -41,7 +41,7 @@ app.get("/api/person/:name", async (req, res) => {
   }
 });
 
-app.post("/api/person", async (req, res) => {
+app.post("/api", async (req, res) => {
   const personData = req.body;
   if (!personData || !personData.name) return res.status(500).json({ msg: "Name field is required" });
 
@@ -59,7 +59,7 @@ app.post("/api/person", async (req, res) => {
   }
 });
 
-app.put("/api/person/:name", async (req, res) => {
+app.put("/api/:name", async (req, res) => {
   const personData = req.body;
   const { name } = personData;
 
@@ -82,7 +82,7 @@ app.put("/api/person/:name", async (req, res) => {
   }
 });
 
-app.delete("/api/person/:name", async (req, res) => {
+app.delete("/api/:name", async (req, res) => {
   const { name } = req.params;
 
   if (!name) return res.status(500).json({ msg: "Name field is required" });

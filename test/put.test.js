@@ -1,12 +1,12 @@
 const request = require("supertest");
-const app = require("../app");
+const app = require("../index");
 
 const chai = require("chai");
 const expect = chai.expect;
 
-describe("PUT /persons", () => {
-  it("should fail when it is only /person", async () => {
-    const res = await request(app).put("/api/person");
+describe("PUT /api", () => {
+  it("should fail when it is only /api", async () => {
+    const res = await request(app).put("/api");
     expect(res.status).to.equal(404);
   });
 
@@ -14,7 +14,7 @@ describe("PUT /persons", () => {
     const randName = `BNXN${Math.random() * 5000}`;
 
     const newPersonData = { name: randName };
-    const res = await request(app).put(`/api/person/BNXN`).send(newPersonData);
+    const res = await request(app).put(`/api/BNXN`).send(newPersonData);
     expect(res.status).to.equal(200);
   });
 });
