@@ -15,6 +15,10 @@ app.disable("x-powered-by");
 
 app.get("/", (req, res) => res.send("API available at /api/person"));
 
+app.get("/api/person", (req, res) => {
+  res.status(200).send(`To get persons data use /api/person/{personName}.`);
+});
+
 app.get("/api/person/:name", async (req, res) => {
   try {
     const { name } = req.params;
@@ -50,9 +54,29 @@ app.post("/api/person", async (req, res) => {
   }
 });
 
-app.put("/api/person/:name", (req, res) => {
+app.put("/api/person/:name", async (req, res) => {
+  const personData = req.body;
+  const nameParam = req.params.name;
+
+  const { name } = personData;
+  if (!name) return res.status(500).json({ msg: "Name field is required" });
+
+  try {
+    await connectToDB();
+    const userExists = await usersSchema.findOne({ name: nameParam });
+    if (!userExists) return res.status(403).json({ msg: `User with name (${nameParam}) does not exist.` });
+
+    const willOverrideOtherUsers = await usersSchema.findOne({ name });
+    if (willOverrideOtherUsers) return res.status(403).json({ msg: `User with name (${name}) already exist.` });
+
+    await usersSchema.updateOne({ name: nameParam }, { $set: { name } });
+    res.status(200).json({ msg: `User (${nameParam}) changed to => (${name})` });
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ msg: "Sorry an error occurred" });
+  }
 });
 
-// app.delete("/api/person/:name", (req, res) => {});
+// app.delete("/api/person/:name",async (req, res) => {});
 
 app.listen(port);
