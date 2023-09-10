@@ -1,12 +1,21 @@
 const express = require("express");
-const connectToDB = require("./utils/mongo_db");
-const usersSchema = require("./utils/schema/usersSchema");
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.get("/", (req, res) => res.send("API available at /person"));
+const connectToDB = require("./utils/mongo_db");
+const usersSchema = require("./utils/schema/usersSchema");
 
-app.get("/person/:name", async (req, res) => {
+const bodyParser = require("body-parser");
+
+app.use(express.static("public"));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.disable("x-powered-by");
+
+app.get("/", (req, res) => res.send("API available at /api/person"));
+
+app.get("/api/person/:name", async (req, res) => {
   try {
     const { name } = req.params;
     if (typeof name !== "string") return res.status(500).json({ msg: "Parameter name must be a string" });
@@ -22,19 +31,28 @@ app.get("/person/:name", async (req, res) => {
   }
 });
 
-app.post("/person", async (req, res) => {
-  const body = req.body;
-  try {
+app.post("/api/person", async (req, res) => {
+  const personData = req.body;
 
-    res.status(200).json({ msg: "User created successfully", data: `Data ${body}` });
+  if (!personData || !personData.name) return res.status(500).json({ msg: "Name field is required" });
+
+  const { name } = personData;
+  try {
+    await connectToDB();
+    const userExists = await usersSchema.findOne({ name });
+    if (userExists) return res.status(403).json({ msg: "User already exists" });
+
+    await usersSchema.create({ name });
+    res.status(200).json({ msg: "User created successfully" });
   } catch (e) {
     console.log(e);
     res.status(500).json({ msg: "Sorry an error occurred" });
   }
 });
 
-// app.put("/person/:name", (req, res) => {});
+app.put("/api/person/:name", (req, res) => {
+});
 
-// app.delete("/person/:name", (req, res) => {});
+// app.delete("/api/person/:name", (req, res) => {});
 
 app.listen(port);
